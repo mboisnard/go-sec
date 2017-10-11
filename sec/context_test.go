@@ -9,7 +9,7 @@ import (
 
 func TestContextInit(t *testing.T) {
 	salt := "test"
-	context, err := ContextInit("./test.db", salt)
+	context, err := ContextInit("./test.db", nil, salt)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, context)
