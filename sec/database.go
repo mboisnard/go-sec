@@ -27,17 +27,18 @@ func databaseInit(db *sql.DB) error {
 		`CREATE TABLE IF NOT EXISTS users (
       uid INTEGER PRIMARY KEY AUTOINCREMENT,
       username VARCHAR(64) NOT NULL,
-      password VARCHAR(64) NOT NULL,
+      password VARCHAR(128) NOT NULL,
       key BLOB NULL,
-      challenge VARCHAR(64) NULL,
+      challenge VARCHAR(128) NULL,
       last_login TIMESTAMP NULL,
+      password_expires TIMESTAMP NULL,
       created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
     
     CREATE TABLE IF NOT EXISTS tokens (
       uid INTEGER NOT NULL,
-      token VARCHAR(64) NOT NULL,
+      token VARCHAR(128) NOT NULL,
       expires TIMESTAMP NOT NULL,
       PRIMARY KEY(uid, token),
       FOREIGN KEY (uid) REFERENCES users(uid)
