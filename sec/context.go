@@ -6,13 +6,14 @@ import (
 
 // SecurityContext holding database connection and stuff.
 type SecurityContext struct {
-	connection *sql.DB
+	connection     *sql.DB
 	pwdConstraints *PasswordConstraints
+	salt           string
 }
 
 // ContextInit is used to initialize the database connection and create the necessary
 // tables, storing a pointer of the database connection in the returned context.
-func ContextInit(dbPath string, constraints *PasswordConstraints) (*SecurityContext, error) {
+func ContextInit(dbPath string, constraints *PasswordConstraints, salt string) (*SecurityContext, error) {
 	db, err := databaseOpen(dbPath)
 	if err != nil {
 		return nil, err
@@ -24,6 +25,7 @@ func ContextInit(dbPath string, constraints *PasswordConstraints) (*SecurityCont
 
 	context := new(SecurityContext)
 	context.connection = db
+	context.salt = salt
 
 	initPwdConstraints(context, constraints)
 
@@ -31,7 +33,6 @@ func ContextInit(dbPath string, constraints *PasswordConstraints) (*SecurityCont
 }
 
 func initPwdConstraints(context *SecurityContext, constraints *PasswordConstraints) {
-	
 	if constraints == nil {
 		context.pwdConstraints = NewDefaultPasswordConstraints()
 	} else {

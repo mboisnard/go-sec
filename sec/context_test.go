@@ -8,9 +8,11 @@ import (
 )
 
 func TestContextInit(t *testing.T) {
-	context, err := ContextInit("./test.db")
+	salt := "test"
+	context, err := ContextInit("./test.db", salt)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, context)
+	assert.Equal(t, salt, context.salt)
 	assert.NotNil(t, context.connection)
 }
