@@ -11,7 +11,7 @@ import (
 // newly crafted SecurityContext
 func databaseOpen(path string) (*sql.DB, error) {
 	if path == "" {
-		return nil, fmt.Errorf("DatabaseInit: database path cannot be empty")
+		return nil, fmt.Errorf("Database path cannot be empty")
 	}
 
 	db, err := sql.Open("sqlite3", path)
