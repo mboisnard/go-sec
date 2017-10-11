@@ -30,6 +30,7 @@ func databaseInit(db *sql.DB) error {
       password VARCHAR(128) NOT NULL,
       key BLOB NULL,
       challenge VARCHAR(128) NULL,
+      login_attempts INTEGER DEFAULT 0,
       last_login TIMESTAMP NULL,
       password_expires TIMESTAMP NULL,
       created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
