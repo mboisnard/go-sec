@@ -23,7 +23,8 @@ func databaseOpen(path string) (*sql.DB, error) {
 }
 
 func databaseInit(db *sql.DB) error {
-	initializationStatement, err := db.Prepare(
+
+	createUsersTableStatement, err := db.Prepare(
 		`CREATE TABLE IF NOT EXISTS users (
       uid INTEGER PRIMARY KEY AUTOINCREMENT,
       username VARCHAR(64) NOT NULL,
@@ -48,7 +49,20 @@ func databaseInit(db *sql.DB) error {
 		return err
 	}
 
-	initializationStatement.Exec()
+	createTokensTableStatement, err := db.Prepare(
+		`CREATE TABLE IF NOT EXISTS tokens (
+      uid INTEGER NOT NULL,
+      token VARCHAR(128) NOT NULL,
+      expires TIMESTAMP NOT NULL,
+      PRIMARY KEY(uid, token),
+      FOREIGN KEY (uid) REFERENCES users(uid)
+		)`)
+	if err != nil {
+		return err
+	}
+
+	createUsersTableStatement.Exec()
+	createTokensTableStatement.Exec()
 
 	return nil
 }
