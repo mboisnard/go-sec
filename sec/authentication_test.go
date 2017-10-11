@@ -9,7 +9,7 @@ import (
 
 func TestRegisterShouldAddNewUserInDatabase(t *testing.T) {
 
-	context, err := ContextInit("./authentication_test.db", "test")
+	context, err := ContextInit("./authentication_test.db", nil, "test")
 	insertedID, err := RegisterUser(context, "user1", "password1")
 
 	assert.NotNil(t, context)
