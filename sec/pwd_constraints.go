@@ -1,35 +1,38 @@
 package sec
 
-/*
- * Présence de majuscule, chiffres & caractères spéciaux
- *	-> éviter les attaques par dictionnaire
- *
- * 8 caractères minimum
- *	-> compliquer les attaques par bruteforce
- *
- * Expiration du mdp après 30 à 90j
- *	-> limiter la durée de validité des mdp
- *
- * Historique de 14 mdp
- *	-> renforcer la limitation de durée de validité des mdp
- *
- * 5 à 7 tentatives de connexion maxi
- *	-> éviter les attaques par bruteforce (attention au ddos !)
- */
+import "strings"
+
+const lowerAZ = "abcdefghijklmnopqrstuvwxyz"
+const upperAZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const specialChars = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 
 // PasswordConstraints is a struct reprensenting
 // the contraints given on password management by users
 //
-// @diversified bool :
+// @diversified : contains upper and lower case letters, and at least one special character
+//							---> avoid dictionnary attacks
+// @minSize			: minimum password size (inclusive)
+// @maxSize			: maximum password size (inclusive)
+//							---> make bruteforce attacks more difficult
+// @expireTime	: time after which a change password request is sent
+// @history			: number of old passwords kept in database to avoid a change to same password
+//							---> limitate passwords validity time
+// @maxCnxTries	: maximum connexion tries allowed
+//							---> avoid bruteforce attacks
 type PasswordConstraints struct {
-	// Password style rules
-	diversified bool
-	minSize     int
-	maxSize     int
-	// Password stockage rules
+	diversified       bool
+	minSize           int
+	maxSize           int
 	expireTime        int
 	history           int
 	maxConnexionTries int
+}
+
+func isDiversified(password string, diversified bool) bool {
+	if diversified {
+		return strings.ContainsAny(password, lowerAZ) && strings.ContainsAny(password, upperAZ) && strings.ContainsAny(password, specialChars)
+	}
+	return true
 }
 
 func hasMinSize(password string, minSize int) bool {
