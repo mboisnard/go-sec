@@ -3,6 +3,8 @@ package sec
 import (
 	"database/sql"
 	"fmt"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // DatabaseInit is used to initialize the database connection and store it a
